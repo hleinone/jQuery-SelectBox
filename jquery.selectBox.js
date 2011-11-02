@@ -1,6 +1,6 @@
 /*
 	
-	jQuery selectBox (version 1.0.7)
+	jQuery selectBox (version 1.0.8)
 	
 		A cosmetic, styleable replacement for SELECT elements.
 	
@@ -96,6 +96,7 @@
 		v1.0.6 (2011-04-29) - Fixed bug where inline controls could be "dragged" when selecting an empty area
 		v1.0.7 (2011-05-18) - Expanded iOS check to include Android devices as well
 		                    - Added autoWidth option; set to false on init to use CSS widths for dropdown menus
+		v1.0.8 (2011-11-02) - Added position option to place the dropdown above the control
 		                      
 	Known Issues:
 	
@@ -440,10 +441,18 @@ if(jQuery) (function($) {
 				
 				var borderBottomWidth = isNaN(control.css('borderBottomWidth')) ? 0 : parseInt(control.css('borderBottomWidth'));
 				// Menu position
-				options.css({
-					top: control.offset().top + control.outerHeight() - borderBottomWidth,
-					left: control.offset().left
-				});
+				if( settings.position && settings.position === 'top'  ) {
+					var scrollBox = control.hasClass('selectBox-dropdown') ? options : options.parent();
+					options.css({
+						top: control.offset().top - scrollBox.outerHeight(),
+						left: control.offset().left
+					});
+				} else {
+					options.css({
+						top: control.offset().top + control.outerHeight() - borderBottomWidth,
+						left: control.offset().left
+					});
+				}
 				
 				// Show menu
 				switch( settings.menuTransition ) {
